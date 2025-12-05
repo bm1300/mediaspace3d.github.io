@@ -2,518 +2,576 @@
 <html lang="zh-CN">
 
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/omggif/1.0.1/omggif.min.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>本地媒体虚拟展示空间</title>
-    <style>
-        /* 开屏介绍样式 */
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0a0b14 0%, #1a1d2b 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            color: white;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            padding: 20px;
-        }
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/omggif/1.0.1/omggif.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>本地媒体相册3D虚拟展示空间</title>
+	<link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
+	<style>
+		/* 开屏介绍样式 */
+		#splash-screen
+		{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(135deg, #0a0b14 0%, #1a1d2b 100%);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			z-index: 9999;
+			color: white;
+			font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+			transition: opacity 0.8s ease, transform 0.8s ease;
+			padding: 20px;
+		}
 
-            #splash-screen.hidden {
-                opacity: 0;
-                pointer-events: none;
-                transform: translateY(-20px);
-            }
+			#splash-screen.hidden
+			{
+				opacity: 0;
+				pointer-events: none;
+				transform: translateY(-20px);
+			}
 
-        .splash-content {
-            max-width: 800px;
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
+		.splash-content
+		{
+			max-width: 800px;
+			text-align: center;
+			padding: 40px;
+			background: rgba(255, 255, 255, 0.08);
+			backdrop-filter: blur(20px);
+			border-radius: 24px;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		}
 
-        .splash-logo {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            background: linear-gradient(90deg, #6a89ff, #4d8aff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 1px;
-        }
+		.splash-logo
+		{
+			font-size: 48px;
+			font-weight: 700;
+			margin-bottom: 30px;
+			background: linear-gradient(90deg, #6a89ff, #4d8aff);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+			letter-spacing: 1px;
+		}
 
-        .splash-title {
-            font-size: 36px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: rgba(255, 255, 255, 0.95);
-        }
+		.splash-title
+		{
+			font-size: 36px;
+			font-weight: 600;
+			margin-bottom: 20px;
+			color: rgba(255, 255, 255, 0.95);
+		}
 
-        .splash-subtitle {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 40px;
-            line-height: 1.6;
-            max-width: 600px;
-        }
+		.splash-subtitle
+		{
+			font-size: 18px;
+			color: rgba(255, 255, 255, 0.7);
+			margin-bottom: 40px;
+			line-height: 1.6;
+			max-width: 600px;
+		}
 
-        .splash-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-        }
+		.splash-features
+		{
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 20px;
+			margin: 40px 0;
+		}
 
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-        }
+		.feature-card
+		{
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 16px;
+			padding: 24px;
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			transition: all 0.3s ease;
+		}
 
-            .feature-card:hover {
-                transform: translateY(-5px);
-                background: rgba(255, 255, 255, 0.08);
-                border-color: rgba(255, 255, 255, 0.15);
-            }
+			.feature-card:hover
+			{
+				transform: translateY(-5px);
+				background: rgba(255, 255, 255, 0.08);
+				border-color: rgba(255, 255, 255, 0.15);
+			}
 
-        .feature-icon {
-            font-size: 32px;
-            margin-bottom: 15px;
-        }
+		.feature-icon
+		{
+			font-size: 32px;
+			margin-bottom: 15px;
+		}
 
-        .feature-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: rgba(255, 255, 255, 0.9);
-        }
+		.feature-title
+		{
+			font-size: 16px;
+			font-weight: 600;
+			margin-bottom: 10px;
+			color: rgba(255, 255, 255, 0.9);
+		}
 
-        .feature-desc {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.5;
-        }
+		.feature-desc
+		{
+			font-size: 14px;
+			color: rgba(255, 255, 255, 0.6);
+			line-height: 1.5;
+		}
 
-        .splash-controls {
-            margin-top: 40px;
-        }
+		.splash-controls
+		{
+			margin-top: 40px;
+		}
 
-        .start-button {
-            background: linear-gradient(135deg, #4d8aff 0%, #6a89ff 100%);
-            color: white;
-            border: none;
-            padding: 16px 48px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(77, 138, 255, 0.3);
-        }
+		.start-button
+		{
+			background: linear-gradient(135deg, #4d8aff 0%, #6a89ff 100%);
+			color: white;
+			border: none;
+			padding: 16px 48px;
+			border-radius: 12px;
+			font-size: 18px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			box-shadow: 0 8px 25px rgba(77, 138, 255, 0.3);
+		}
 
-            .start-button:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 12px 35px rgba(77, 138, 255, 0.4);
-            }
+			.start-button:hover
+			{
+				transform: translateY(-3px);
+				box-shadow: 0 12px 35px rgba(77, 138, 255, 0.4);
+			}
 
-            .start-button:active {
-                transform: translateY(0);
-            }
+			.start-button:active
+			{
+				transform: translateY(0);
+			}
 
-        .quick-start {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 14px;
-            margin-top: 20px;
-            text-align: center;
-            line-height: 1.6;
-        }
-        /* 基础样式 */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+		.quick-start
+		{
+			color: rgba(255, 255, 255, 0.5);
+			font-size: 14px;
+			margin-top: 20px;
+			text-align: center;
+			line-height: 1.6;
+		}
+		/* 基础样式 */
+		*
+		{
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
 
-        body {
-            overflow: hidden;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, #1a1d2b 0%, #0f111a 100%);
-            color: #e6e6e6;
-            height: 100vh;
-            position: relative;
-        }
+		body
+		{
+			overflow: hidden;
+			font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+			background: linear-gradient(135deg, #1a1d2b 0%, #0f111a 100%);
+			color: #e6e6e6;
+			height: 100vh;
+			position: relative;
+		}
 
-        #canvas-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
+		#canvas-container
+		{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
 
-        /* UI 面板样式 - 简约现代 */
-        #ui {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            padding: 18px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            max-width: 320px;
-        }
+		/* UI 面板样式 - 简约现代 */
+		#ui
+		{
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			z-index: 100;
+			background: rgba(255, 255, 255, 0.08);
+			backdrop-filter: blur(20px);
+			padding: 18px;
+			border-radius: 16px;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+			transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+			max-width: 320px;
+		}
 
-            #ui.hidden {
-                opacity: 0;
-                pointer-events: none;
-                transform: translateY(-10px);
-            }
+			#ui.hidden
+			{
+				opacity: 0;
+				pointer-events: none;
+				transform: translateY(-10px);
+			}
 
-        /* 按钮样式 - 简约现代 */
-        button {
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 12px 16px;
-            margin: 6px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(10px);
-            width: calc(50% - 12px);
-            display: inline-block;
-            text-align: center;
-        }
+		/* 按钮样式 - 简约现代 */
+		button
+		{
+			background: rgba(255, 255, 255, 0.1);
+			color: rgba(255, 255, 255, 0.9);
+			border: 1px solid rgba(255, 255, 255, 0.15);
+			padding: 12px 16px;
+			margin: 6px;
+			border-radius: 10px;
+			cursor: pointer;
+			font-weight: 500;
+			font-size: 14px;
+			transition: all 0.2s ease;
+			backdrop-filter: blur(10px);
+			width: calc(50% - 12px);
+			display: inline-block;
+			text-align: center;
+		}
 
-            button:hover {
-                background: rgba(255, 255, 255, 0.15);
-                transform: translateY(-2px);
-                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-            }
+			button:hover
+			{
+				background: rgba(255, 255, 255, 0.15);
+				transform: translateY(-2px);
+				box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+			}
 
-            button:active {
-                transform: translateY(0);
-            }
+			button:active
+			{
+				transform: translateY(0);
+			}
 
-        #file-input {
-            display: none;
-        }
+		#file-input
+		{
+			display: none;
+		}
 
-        /* 准星样式 */
-        #crosshair {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.3s ease;
-            z-index: 50;
-        }
+		/* 准星样式 */
+		#crosshair
+		{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 20px;
+			height: 20px;
+			transform: translate(-50%, -50%);
+			transition: opacity 0.3s ease;
+			z-index: 50;
+		}
 
-            #crosshair::before,
-            #crosshair::after {
-                content: '';
-                position: absolute;
-                background-color: rgba(255, 255, 255, 0.8);
-                border-radius: 1px;
-            }
+			#crosshair::before,
+			#crosshair::after
+			{
+				content: '';
+				position: absolute;
+				background-color: rgba(255, 255, 255, 0.8);
+				border-radius: 1px;
+			}
 
-            #crosshair::before {
-                width: 2px;
-                height: 100%;
-                left: 50%;
-                transform: translateX(-50%);
-            }
+			#crosshair::before
+			{
+				width: 2px;
+				height: 100%;
+				left: 50%;
+				transform: translateX(-50%);
+			}
 
-            #crosshair::after {
-                width: 100%;
-                height: 2px;
-                top: 50%;
-                transform: translateY(-50%);
-            }
+			#crosshair::after
+			{
+				width: 100%;
+				height: 2px;
+				top: 50%;
+				transform: translateY(-50%);
+			}
 
-            #crosshair.hidden {
-                opacity: 0;
-            }
+			#crosshair.hidden
+			{
+				opacity: 0;
+			}
 
-        /* 说明面板 */
-        #instructions {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            padding: 14px 18px;
-            border-radius: 16px;
-            font-size: 13px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            max-width: 320px;
-            line-height: 1.6;
-        }
+		/* 说明面板 */
+		#instructions
+		{
+			position: absolute;
+			bottom: 20px;
+			left: 20px;
+			background: rgba(255, 255, 255, 0.08);
+			backdrop-filter: blur(20px);
+			padding: 14px 18px;
+			border-radius: 16px;
+			font-size: 13px;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+			transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+			max-width: 320px;
+			line-height: 1.6;
+		}
 
-            #instructions.hidden {
-                opacity: 0;
-                transform: translateY(10px);
-            }
+			#instructions.hidden
+			{
+				opacity: 0;
+				transform: translateY(10px);
+			}
 
-        /* 视频控制面板 */
-        #video-controls {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            padding: 18px;
-            border-radius: 16px;
-            color: white;
-            z-index: 100;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            min-width: 280px;
-        }
+		/* 视频控制面板 */
+		#video-controls
+		{
+			position: absolute;
+			bottom: 20px;
+			right: 20px;
+			background: rgba(255, 255, 255, 0.08);
+			backdrop-filter: blur(20px);
+			padding: 18px;
+			border-radius: 16px;
+			color: white;
+			z-index: 100;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+			transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+			min-width: 280px;
+		}
 
-            #video-controls.hidden {
-                opacity: 0;
-                pointer-events: none;
-                transform: translateY(10px);
-            }
+			#video-controls.hidden
+			{
+				opacity: 0;
+				pointer-events: none;
+				transform: translateY(10px);
+			}
 
-        .control-row {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
-        }
+		.control-row
+		{
+			display: flex;
+			align-items: center;
+			margin: 10px 0;
+		}
 
-        .control-label {
-            width: 60px;
-            font-size: 13px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.7);
-        }
+		.control-label
+		{
+			width: 60px;
+			font-size: 13px;
+			font-weight: 500;
+			color: rgba(255, 255, 255, 0.7);
+		}
 
-        .slider-container {
-            flex: 1;
-            position: relative;
-            height: 20px;
-        }
+		.slider-container
+		{
+			flex: 1;
+			position: relative;
+			height: 20px;
+		}
 
-        .slider {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 2px;
-            position: relative;
-            cursor: pointer;
-        }
+		.slider
+		{
+			width: 100%;
+			height: 4px;
+			background: rgba(255, 255, 255, 0.15);
+			border-radius: 2px;
+			position: relative;
+			cursor: pointer;
+		}
 
-        .slider-progress {
-            position: absolute;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 2px;
-        }
+		.slider-progress
+		{
+			position: absolute;
+			height: 100%;
+			background: rgba(255, 255, 255, 0.8);
+			border-radius: 2px;
+		}
 
-        .slider-handle {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background: white;
-            border-radius: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            transition: transform 0.1s ease;
-        }
+		.slider-handle
+		{
+			position: absolute;
+			width: 14px;
+			height: 14px;
+			background: white;
+			border-radius: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			cursor: pointer;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+			transition: transform 0.1s ease;
+		}
 
-            .slider-handle:hover {
-                transform: translate(-50%, -50%) scale(1.2);
-            }
+			.slider-handle:hover
+			{
+				transform: translate(-50%, -50%) scale(1.2);
+			}
 
-        .control-button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: white;
-            padding: 8px 14px;
-            margin: 0 6px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s ease;
-        }
+		.control-button
+		{
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.15);
+			color: white;
+			padding: 8px 14px;
+			margin: 0 6px;
+			border-radius: 8px;
+			cursor: pointer;
+			font-size: 12px;
+			transition: all 0.2s ease;
+		}
 
-            .control-button:hover {
-                background: rgba(255, 255, 255, 0.15);
-            }
+			.control-button:hover
+			{
+				background: rgba(255, 255, 255, 0.15);
+			}
 
-        /* 加载界面 */
-        #loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 17, 26, 0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 200;
-            color: white;
-            transition: opacity 0.5s ease;
-        }
+		/* 加载界面 */
+		#loading-overlay
+		{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(15, 17, 26, 0.95);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			z-index: 200;
+			color: white;
+			transition: opacity 0.5s ease;
+		}
 
-            #loading-overlay.hidden {
-                opacity: 0;
-                pointer-events: none;
-            }
+			#loading-overlay.hidden
+			{
+				opacity: 0;
+				pointer-events: none;
+			}
 
-        #loading-text {
-            font-size: 18px;
-            margin-bottom: 20px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.9);
-        }
+		#loading-text
+		{
+			font-size: 18px;
+			margin-bottom: 20px;
+			font-weight: 500;
+			color: rgba(255, 255, 255, 0.9);
+		}
 
-        #loading-progress {
-            width: 300px;
-            height: 4px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
+		#loading-progress
+		{
+			width: 300px;
+			height: 4px;
+			background-color: rgba(255, 255, 255, 0.1);
+			border-radius: 2px;
+			margin-top: 20px;
+			overflow: hidden;
+		}
 
-        #loading-bar {
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 2px;
-        }
+		#loading-bar
+		{
+			height: 100%;
+			background: rgba(255, 255, 255, 0.8);
+			width: 0%;
+			transition: width 0.3s ease;
+			border-radius: 2px;
+		}
 
-        /* 性能统计 */
-        #performance-stats {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            color: white;
-            padding: 12px 16px;
-            border-radius: 16px;
-            font-size: 12px;
-            z-index: 100;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-            line-height: 1.5;
-        }
+		/* 性能统计 */
+		#performance-stats
+		{
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			background: rgba(255, 255, 255, 0.08);
+			backdrop-filter: blur(20px);
+			color: white;
+			padding: 12px 16px;
+			border-radius: 16px;
+			font-size: 12px;
+			z-index: 100;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+			line-height: 1.5;
+		}
 
-        #performance-stats.hidden
-        {
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(-10px);
-        }
+			#performance-stats.hidden
+			{
+				opacity: 0;
+				pointer-events: none;
+				transform: translateY(-10px);
+			}
 
-        .stat-value {
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 600;
-        }
+		.stat-value
+		{
+			color: rgba(255, 255, 255, 0.9);
+			font-weight: 600;
+		}
 
-        /* 标题样式 */
-        .panel-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: rgba(255, 255, 255, 0.9);
-            display: flex;
-            align-items: center;
-        }
+		/* 标题样式 */
+		.panel-title
+		{
+			font-size: 14px;
+			font-weight: 600;
+			margin-bottom: 12px;
+			color: rgba(255, 255, 255, 0.9);
+			display: flex;
+			align-items: center;
+		}
 
-            .panel-title::before {
-                content: '';
-                display: inline-block;
-                width: 4px;
-                height: 16px;
-                background: rgba(255, 255, 255, 0.8);
-                margin-right: 10px;
-                border-radius: 2px;
-            }
+			.panel-title::before
+			{
+				content: '';
+				display: inline-block;
+				width: 4px;
+				height: 16px;
+				background: rgba(255, 255, 255, 0.8);
+				margin-right: 10px;
+				border-radius: 2px;
+			}
 
-        /* 按钮组布局 */
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
+		/* 按钮组布局 */
+		.button-group
+		{
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+		}
 
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-            #ui, #instructions, #video-controls, #performance-stats {
-                padding: 14px;
-                font-size: 12px;
-                max-width: 280px;
-            }
+		/* 响应式调整 */
+		@media (max-width: 768px)
+		{
+			#ui, #instructions, #video-controls, #performance-stats
+			{
+				padding: 14px;
+				font-size: 12px;
+				max-width: 280px;
+			}
 
-            button {
-                padding: 10px 12px;
-                font-size: 12px;
-            }
+			button
+			{
+				padding: 10px 12px;
+				font-size: 12px;
+			}
 
-            #instructions {
-                max-width: 250px;
-            }
-        }
+			#instructions
+			{
+				max-width: 250px;
+			}
+		}
 
-        /* 隐藏切换地面按钮 */
-        #toggle-ground
-        {
-            display: none !important;
-        }
+		/* 隐藏切换地面按钮 */
+		#toggle-ground
+		{
+			display: none !important;
+		}
 
-        /* 隐藏切换星空按钮 */
-        #toggle-stars
-        {
-            display: none !important;
-        }
+		/* 隐藏切换星空按钮 */
+		#toggle-stars
+		{
+			display: none !important;
+		}
 
-        /* 隐藏性能模式按钮 */
-        #performance-toggle
-        {
-            display: none !important;
-        }
-
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+		/* 隐藏性能模式按钮 */
+		#performance-toggle
+		{
+			display: none !important;
+		}
+	</style>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div id="splash-screen">
         <div class="splash-content">
-            <h1 class="splash-title">相册3D虚拟展示空间</h1>
+			<h1 class="splash-title">本地媒体相册3D虚拟展示空间</h1>
             <p class="splash-subtitle">一个沉浸式的本地媒体文件浏览体验。将您的图片和视频文件放置在虚拟空间中，以第一人称视角自由探索。</p>
 
             <div class="splash-features">
@@ -533,9 +591,9 @@
                     <p class="feature-desc">靠近媒体文件即可点击播放，支持视频控制</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">性能优化</h3>
-                    <p class="feature-desc">动态加载和卸载，支持大量媒体文件流畅展示</p>
+                    <div class="feature-icon">🔐</div>
+                    <h3 class="feature-title">隐私保障</h3>
+					<p class="feature-desc">媒体文件仅在浏览器本地处理，不上传至任何服务器</p>
                 </div>
             </div>
 
@@ -635,72 +693,76 @@
 	<script>
 		// 主应用程序类 - 简约现代版
 		class VirtualMediaSpace {
-		constructor() {
-		this.scene = null;
-		this.camera = null;
-		this.renderer = null;
-		this.controls = null;
+			constructor() {
+				this.scene = null;
+				this.camera = null;
+				this.renderer = null;
+				this.controls = null;
 
-		this.mediaObjects = []; // 所有媒体对象
-		this.visibleMedia = []; // 当前可见的媒体对象
-		this.mediaPool = []; // 媒体池，用于复用
-		this.currentlyPlaying = null;
+				this.mediaObjects = []; // 所有媒体对象
+				this.visibleMedia = []; // 当前可见的媒体对象
+				this.mediaPool = []; // 媒体池，用于复用
+				this.currentlyPlaying = null;
 
-		this.isImmersive = false;
-		this.lastMoveTime = Date.now();
-		this.crosshairVisible = true;
-		this.isPointerLocked = false;
+				this.isImmersive = false;
+				this.lastMoveTime = Date.now();
+				this.crosshairVisible = true;
+				this.isPointerLocked = false;
 
-		this.videoControlsVisible = false;
+				this.videoControlsVisible = false;
 
-		// 性能优化相关属性
-		this.performanceMode = false;
-		this.loadingQueue = [];
-		this.isLoading = false;
-		this.loadedCount = 0;
-		this.totalToLoad = 0;
-		this.frameCount = 0;
-		this.lastFpsUpdate = 0;
-		this.fps = 0;
+				// 性能优化相关属性
+				this.performanceMode = false;
+				this.loadingQueue = [];
+				this.isLoading = false;
+				this.loadedCount = 0;
+				this.totalToLoad = 0;
+				this.frameCount = 0;
+				this.lastFpsUpdate = 0;
+				this.fps = 0;
 
-		// 动态分布相关属性 - 无序加载方式
-		this.viewDistance = 70; // 可视距离
-		this.spawnDistance = 70; // 生成距离（最远）
-		this.minDistance = 10; // 最近生成距离
-		this.minSpacing = 9; // 最小间距（米）
-		this.maxVisibleMedia = 40; // 最大可见媒体数量
-		this.gridSize = this.minSpacing; // 网格大小
-		this.occupiedGrids = new Set(); // 已占用的网格位置
-		this.lastSpawnCheck = 0;
-		this.spawnInterval = 500; // 生成检查间隔（毫秒）
-		this.donationQR = null; // 打赏二维码对象
+				// 动态分布相关属性 - 无序加载方式
+				this.viewDistance = 60; // 可视距离
+				this.spawnDistance = 60; // 生成距离（最远）
+				this.minDistance = 11; // 最近生成距离
+				this.minSpacing = 11; // 最小间距（米）
+				this.maxVisibleMedia = 30; // 最大可见媒体数量
+				this.gridSize = this.minSpacing; // 网格大小
+				this.occupiedGrids = new Set(); // 已占用的网格位置
+				this.lastSpawnCheck = 0;
+				this.spawnInterval = 500; // 生成检查间隔（毫秒）
+				this.donationQR = null; // 打赏二维码对象
 
-		// 内存管理
-		this.maxMediaObjects = 2000; // 最大媒体对象数量
-		this.unloadDistance = 70; // 卸载距离（米）
+				// 内存管理
+				this.maxMediaObjects = 2000; // 最大媒体对象数量
+				this.unloadDistance = 60; // 卸载距离（米）
 
-		// 星空粒子
-		this.stars = null;
-		this.twinklingStars = null;
-		this.starLayers = [];
-		this.starfieldEnabled = true;
-		this.time = 0; // 用于星空动画的时间变量
+				// 星空粒子
+				this.stars = null;
+				this.twinklingStars = null;
+				this.starLayers = [];
+				this.starfieldEnabled = true;
+				this.time = 0; // 用于星空动画的时间变量
 
-		// 地面相关
-		this.groundEnabled = true;
-		this.groundType = 'grid'; // 'grid' 或 'marble'
-		this.groundObjects = [];
-		this.groundReflection = null;
+				// 地面相关
+				this.groundEnabled = true;
+				this.groundType = 'grid'; // 'grid' 或 'marble'
+				this.groundObjects = [];
+				this.groundReflection = null;
 
-		// 视频控制相关
-		this.currentlyPlaying = null;
-		this.videoControlsVisible = false;
+				// 视频控制相关
+				this.currentlyPlaying = null;
+				this.videoControlsVisible = false;
 
-		this.init();
-		this.setupEventListeners();
-		this.animate();
-		this.startPerformanceMonitoring();
-		}
+				this.init();
+				this.setupEventListeners();
+				this.animate();
+				this.startPerformanceMonitoring();
+
+				// 重生点排除半径
+				this.spawnExclusionRadius = 15; // 重生点排除半径（米），比11米大一些
+				this.spawnPoint = new THREE.Vector3(0, 1.7, 0); // 重生点坐标
+			}
 
 		// 视频快进快退方法
 		seekVideo(seconds) {
@@ -1856,48 +1918,55 @@
 
 		// 检查位置是否可用
 		isPositionAvailable(position) {
-		const gridKey = this.getGridKey(position);
+			const gridKey = this.getGridKey(position);
 
-		// 检查是否已被占用
-		if (this.occupiedGrids.has(gridKey)) {
-		return false;
-		}
+			// 检查是否已被占用
+			if (this.occupiedGrids.has(gridKey)) {
+				return false;
+			}
 
-		// 检查是否与其他可见媒体距离过近
-		for (const obj of this.visibleMedia) {
-		if (obj.mesh && position.distanceTo(obj.mesh.position) < this.minSpacing) {
-		return false;
-		}
-		}
+			// 检查是否与其他可见媒体距离过近
+			for (const obj of this.visibleMedia) {
+				if (obj.mesh && position.distanceTo(obj.mesh.position) < this.minSpacing) {
+					return false;
+				}
+			}
+			
+			// 检查是否在重生点排除半径内
+			const distanceToSpawn = position.distanceTo(this.spawnPoint);
+			if (distanceToSpawn < this.spawnExclusionRadius) {
+				return false;
+			}
 
-		return true;
+			return true;
 		}
 
 		// 修改：获取环形区域内的可用位置（由近到远）
 		getAvailablePositionInRing() {
-		const cameraPos = this.camera.position;
-		const attemptsPerRing = 20; // 每个距离环的尝试次数
+			const cameraPos = this.camera.position;
+			const attemptsPerRing = 20; // 每个距离环的尝试次数
 		
-		// 从最近距离开始，逐步向外寻找
-		for (let distance = this.minDistance; distance <= this.spawnDistance; distance += this.minSpacing * 0.8) {
-		for (let attempt = 0; attempt < attemptsPerRing; attempt++) {
-		// 在环形区域随机角度
-		const angle = Math.random() * Math.PI * 2;
+			// 从最近距离开始，逐步向外寻找
+			for (let distance = this.minDistance; distance <= this.spawnDistance; distance += this.minSpacing * 0.8) {
+				for (let attempt = 0; attempt < attemptsPerRing; attempt++) {
+					// 在环形区域随机角度
+					const angle = Math.random() * Math.PI * 2;
 		
-		const position = new THREE.Vector3(
-		cameraPos.x + Math.cos(angle) * distance,
-		0,
-		cameraPos.z + Math.sin(angle) * distance
-		);
+					const position = new THREE.Vector3(
+						cameraPos.x + Math.cos(angle) * distance,
+						0,
+						cameraPos.z + Math.sin(angle) * distance
+					);
 
-		if (this.isPositionAvailable(position)) {
-		return { position, distance };
-		}
-		}
-		}
+					// 使用统一的 isPositionAvailable 方法检查位置
+					if (this.isPositionAvailable(position)) {
+						return { position, distance };
+					}
+				}
+			}
 
-		// 如果找不到合适位置，返回null
-		return null;
+			// 如果找不到合适位置，返回null
+			return null;
 		}
 
 		// 修改：动态生成媒体 - 无序方式由近到远
@@ -2638,29 +2707,19 @@
 		// 初始化应用
 		let app = null;
 
-		window.addEventListener('DOMContentLoaded', () => {
-		// 显示开屏界面，等待用户点击开始
-		const splashScreen = document.getElementById('splash-screen');
-		const startButton = document.getElementById('start-button');
+		window.onload = function() {
+				// 显示开屏界面，等待用户点击开始
+				const splashScreen = document.getElementById('splash-screen');
+				const startButton = document.getElementById('start-button');
 
-		startButton.addEventListener('click', () => {
-		// 隐藏开屏界面
-		splashScreen.classList.add('hidden');
-
-		// 初始化应用
-		app = new VirtualMediaSpace();
-		});
-
-		// 可选：添加键盘快捷键跳过介绍
-		document.addEventListener('keydown', (e) => {
-		if (e.code === 'Enter' || e.code === 'Space') {
-		if (!app && !splashScreen.classList.contains('hidden')) {
-		splashScreen.classList.add('hidden');
-		app = new VirtualMediaSpace();
-		}
-		}
-		});
-		});
+				startButton.addEventListener('click', () => {
+					// 隐藏开屏界面
+					splashScreen.classList.add('hidden');
+            
+					// 初始化应用
+					app = new VirtualMediaSpace();
+				});
+			};
 	</script>
 </body>
 
